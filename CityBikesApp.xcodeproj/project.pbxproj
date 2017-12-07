@@ -14,6 +14,7 @@
 		C36AC4191FD9836300A30977 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C36AC4171FD9836300A30977 /* LaunchScreen.storyboard */; };
 		C36AC4241FD9836300A30977 /* CityBikesAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C36AC4231FD9836300A30977 /* CityBikesAppTests.swift */; };
 		C36AC42F1FD9836400A30977 /* CityBikesAppUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C36AC42E1FD9836400A30977 /* CityBikesAppUITests.swift */; };
+		C36AC43D1FD987E300A30977 /* CBWebServiceHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C36AC43C1FD987E300A30977 /* CBWebServiceHelper.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,7 @@
 		C36AC42A1FD9836400A30977 /* CityBikesAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CityBikesAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C36AC42E1FD9836400A30977 /* CityBikesAppUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityBikesAppUITests.swift; sourceTree = "<group>"; };
 		C36AC4301FD9836400A30977 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C36AC43C1FD987E300A30977 /* CBWebServiceHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CBWebServiceHelper.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +105,7 @@
 				C36AC4151FD9836300A30977 /* Assets.xcassets */,
 				C36AC4171FD9836300A30977 /* LaunchScreen.storyboard */,
 				C36AC41A1FD9836300A30977 /* Info.plist */,
+				C36AC43C1FD987E300A30977 /* CBWebServiceHelper.swift */,
 			);
 			path = CityBikesApp;
 			sourceTree = "<group>";
@@ -261,6 +264,7 @@
 			files = (
 				C36AC4111FD9836300A30977 /* ViewController.swift in Sources */,
 				C36AC40F1FD9836300A30977 /* AppDelegate.swift in Sources */,
+				C36AC43D1FD987E300A30977 /* CBWebServiceHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
