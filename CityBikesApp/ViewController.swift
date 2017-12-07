@@ -2,7 +2,7 @@
 //  ViewController.swift
 //  CityBikesApp
 //
-//  Created by Rabish_Kumar on 07/12/17.
+//  Created by venkatesh on 07/12/17.
 //  Copyright © 2017 venkatesh. All rights reserved.
 //
 
