@@ -38,7 +38,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
             
         }
     }
-
+    
     // MARK:- TableView Delegate and Datasource methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 10
@@ -54,6 +54,16 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if (segue.identifier == "DetailViewController") {
+            if self.bikeListTableView.indexPathForSelectedRow != nil {
+                let controller = segue.destination as! DetailViewController
+                controller.bikeIdStr = "Test"
+            }
+        }
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
