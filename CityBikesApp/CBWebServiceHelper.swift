@@ -42,10 +42,37 @@ class CBWebServiceHelper: NSObject {
         SCNetworkReachabilityGetFlags(reachability!, &flags)
         let isReachable: Bool = flags.contains(.reachable)
         
-        if(isReachable == true){
+        if(isReachable == true) {
+            
             let dataTask = session.dataTask(with: request as URLRequest) {
                 ( data: Data?, response: URLResponse?, error: Error?) -> Void in
+                // Check HTTP Response for successful GET request
+                guard let httpResponse = response as? HTTPURLResponse, let receivedData = data
+                    else {
+                        print("error: not a valid http response")
+                        return
+                }
                 
+                switch (httpResponse.statusCode)
+                {
+                case 200:
+                    
+                    let response = NSString (data: receivedData, encoding: String.Encoding.utf8.rawValue)
+                    //print("response is \(String(describing: response))")
+                    
+                    do {
+                        let getResponse = try JSONSerialization.jsonObject(with: receivedData, options: .allowFragments)
+                        responceHandler(true,data!, response! as String)
+                        print("Response: \(getResponse)")
+                        // }
+                    } catch {
+                        print("error serializing JSON: \(error)")
+                    }
+                    
+                    break
+                default:
+                    print("GET request got response \(httpResponse.statusCode)")
+                }
             }
             dataTask.resume()
         }else{
