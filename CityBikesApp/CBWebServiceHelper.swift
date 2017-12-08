@@ -58,8 +58,7 @@ class CBWebServiceHelper: NSObject {
                 case 200:
                     
                     let response = NSString (data: receivedData, encoding: String.Encoding.utf8.rawValue)
-                    //print("response is \(String(describing: response))")
-                    
+                    //print("response is \(String(describing: response))")s
                     do {
                         let getResponse = try JSONSerialization.jsonObject(with: receivedData, options: .allowFragments)
                         responceHandler(true,data!, response! as String)
