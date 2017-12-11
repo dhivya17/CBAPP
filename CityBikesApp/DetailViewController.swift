@@ -15,7 +15,9 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
     var companyNameStr:String = ""
     var locationStr:String = ""
     var bikeNameStr:String = ""
+    var dataDict:AnyObject = [:] as AnyObject
     
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var companyNameLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
@@ -27,7 +29,6 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
         setupUserTrackingButtonAndScaleView()
         registerAnnotationViewClasses()
         loadDataForMapRegionAndBikes()
-        // Do any additional setup after loading the view.
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -79,20 +80,28 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
         let serviceHelper = CBWebServiceHelper.shared()
         serviceHelper.sendRequest(toWebServer:serviceUrl, viewController:self) {(_status, data, response) in
             do {
+                DispatchQueue.main.async {
+                    self.activityIndicator.stopAnimating()
+                }
                 if(_status == true){
                     let getResponse = try JSONSerialization.jsonObject(with: data!, options: .allowFragments)  as! [String: AnyObject];
                     print("!!!!\(getResponse)")
-                    let dataDict = getResponse["network"] as AnyObject
-                    let locationDict = dataDict["location"] as AnyObject
-                    let latitude = locationDict["latitude"] as! NSNumber
-                    let longitude = locationDict["longitude"] as! NSNumber
-                    let coordinate = CLLocationCoordinate2D(latitude: latitude.doubleValue, longitude:longitude.doubleValue)
-                    let span = MKCoordinateSpanMake(0.1, 0.1)
-                    DispatchQueue.main.async {
-                        self.mapView.region = MKCoordinateRegionMake(coordinate, span)
+                    self.dataDict = getResponse["network"] as AnyObject
+                    if let locationDict = self.dataDict["location"] as? NSDictionary {
+                        let latitude = locationDict["latitude"] as! NSNumber
+                        let longitude = locationDict["longitude"] as! NSNumber
+                        let coordinate = CLLocationCoordinate2D(latitude: latitude.doubleValue, longitude:longitude.doubleValue)
+                        let span = MKCoordinateSpanMake(0.1, 0.1)
+                         DispatchQueue.main.async {
+                            self.mapView.region = MKCoordinateRegionMake(coordinate, span)
+                            }
                     }
-                    if let bikes = dataDict["stations"] as? [[String : AnyObject]] {
-                        self.mapView.addAnnotations(Bike.bikes(fromDictionaries: bikes))
+                     DispatchQueue.main.async {
+                        if let mapView = self.mapView {
+                            if let bikes = self.dataDict["stations"] as? [[String : AnyObject]] {
+                                mapView.addAnnotations(Bike.bikes(fromDictionaries: bikes))
+                            }
+                        }
                     }
                 }
                 
@@ -100,6 +109,20 @@ class DetailViewController: UIViewController, MKMapViewDelegate {
                 print("error serializing JSON: \(error)")
             }
         }
+    }
+    
+    func mapView(_ mapView: MKMapView, didSelect view: MKAnnotationView) {
+        print("annotation selected")
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        let userLocation = self.mapView.userLocation
+        self.mapView.removeAnnotations(self.mapView.annotations)
+        self.mapView.addAnnotation(userLocation)
+    }
+    
+    deinit {
+        self.mapView.delegate = nil
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()

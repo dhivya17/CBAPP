@@ -17,6 +17,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
 
     @IBOutlet weak var bikeListTableView: UITableView!
     @IBOutlet weak var bikeListSearchBar: UISearchBar!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     var listArr:[Any] = []
     var searchActive : Bool = false
     var filteredArr:[AnyObject] = []
@@ -32,6 +33,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         let serviceHelper = CBWebServiceHelper.shared()
          serviceHelper.sendRequest(toWebServer:"http://api.citybik.es/v2/networks?fields=id,name,company,location", viewController:self) {(_status, data, response) in
             do {
+                DispatchQueue.main.async {
+                   self.activityIndicator.stopAnimating()
+                }
                 if(_status == true){
                     let getResponse = try JSONSerialization.jsonObject(with: data!, options: .allowFragments)  as! [String: AnyObject];
                     self.listArr = (getResponse["networks"] as? [Any])!

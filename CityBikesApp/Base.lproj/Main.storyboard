@@ -83,21 +83,28 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="f6M-xp-85p"/>
                                 </connections>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="GD7-0v-P4q">
+                                <rect key="frame" x="169.5" y="315" width="37" height="37"/>
+                                <color key="color" red="0.12544492979999999" green="0.1150710308" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="NT0-dn-Rq4" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="0Oo-Ls-aGL"/>
+                            <constraint firstItem="GD7-0v-P4q" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="DD8-Hb-sd2"/>
                             <constraint firstItem="NT0-dn-Rq4" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="G8M-t9-z6H"/>
                             <constraint firstItem="5Ok-rZ-Rr4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="R03-ox-nJ2"/>
                             <constraint firstItem="NT0-dn-Rq4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Uzm-fd-Gzs"/>
                             <constraint firstItem="5Ok-rZ-Rr4" firstAttribute="top" secondItem="NT0-dn-Rq4" secondAttribute="bottom" id="ZNT-LD-AB7"/>
                             <constraint firstItem="5Ok-rZ-Rr4" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="ZZy-he-kSa"/>
                             <constraint firstItem="5Ok-rZ-Rr4" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="hTb-6v-cz2"/>
+                            <constraint firstItem="GD7-0v-P4q" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="sCW-4c-tKO"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="gIl-zr-3LO"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="GD7-0v-P4q" id="hAW-Yi-yoc"/>
                         <outlet property="bikeListSearchBar" destination="NT0-dn-Rq4" id="OPj-zK-w67"/>
                         <outlet property="bikeListTableView" destination="5Ok-rZ-Rr4" id="lro-TS-PjD"/>
                         <outlet property="searchDisplayController" destination="Brp-FR-yKK" id="AU3-OD-DtU"/>
@@ -143,18 +150,22 @@
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="zzI-qD-mdp">
+                                <rect key="frame" x="5" y="138" width="365" height="524"/>
+                                <connections>
+                                    <outlet property="delegate" destination="NWd-hN-9ug" id="V2T-7e-xDa"/>
+                                </connections>
+                            </mapView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="stations:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="W3Z-vS-8EY">
                                 <rect key="frame" x="5" y="115" width="365" height="21"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="zzI-qD-mdp">
-                                <rect key="frame" x="5" y="138" width="365" height="524"/>
-                                <connections>
-                                    <outlet property="delegate" destination="NWd-hN-9ug" id="V2T-7e-xDa"/>
-                                </connections>
-                            </mapView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="z09-pU-7UD">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                                <color key="color" red="0.12544492979999999" green="0.1150710308" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" red="0.96078431372549022" green="0.96078431372549022" blue="0.96078431372549022" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
@@ -163,12 +174,14 @@
                             <constraint firstItem="zv9-r6-8Wh" firstAttribute="bottom" secondItem="zzI-qD-mdp" secondAttribute="bottom" constant="5" id="Fv2-iz-hfN"/>
                             <constraint firstItem="Ydt-Xd-1nc" firstAttribute="leading" secondItem="zv9-r6-8Wh" secondAttribute="leading" constant="5" id="HEy-uK-Pl8"/>
                             <constraint firstItem="zzI-qD-mdp" firstAttribute="top" secondItem="W3Z-vS-8EY" secondAttribute="bottom" constant="2" id="Q22-5f-yyR"/>
+                            <constraint firstItem="z09-pU-7UD" firstAttribute="centerY" secondItem="NBz-jo-RET" secondAttribute="centerY" id="TvM-HA-MiP"/>
                             <constraint firstItem="dBI-J9-xTr" firstAttribute="top" secondItem="Ydt-Xd-1nc" secondAttribute="bottom" constant="2" id="VP2-TC-z9k"/>
                             <constraint firstItem="W3Z-vS-8EY" firstAttribute="top" secondItem="dBI-J9-xTr" secondAttribute="bottom" constant="2" id="cvd-zO-HOa"/>
                             <constraint firstItem="zv9-r6-8Wh" firstAttribute="trailing" secondItem="zzI-qD-mdp" secondAttribute="trailing" constant="5" id="exW-zC-Dqe"/>
                             <constraint firstItem="W3Z-vS-8EY" firstAttribute="leading" secondItem="zv9-r6-8Wh" secondAttribute="leading" constant="5" id="iz1-IZ-Jah"/>
                             <constraint firstItem="Ydt-Xd-1nc" firstAttribute="top" secondItem="zv9-r6-8Wh" secondAttribute="top" constant="5" id="m1a-d0-RPG"/>
                             <constraint firstItem="zv9-r6-8Wh" firstAttribute="trailing" secondItem="W3Z-vS-8EY" secondAttribute="trailing" constant="5" id="mrZ-Cj-Pzt"/>
+                            <constraint firstItem="z09-pU-7UD" firstAttribute="centerX" secondItem="NBz-jo-RET" secondAttribute="centerX" id="n5K-Le-HDE"/>
                             <constraint firstItem="dBI-J9-xTr" firstAttribute="leading" secondItem="zv9-r6-8Wh" secondAttribute="leading" constant="5" id="pgC-nG-yHp"/>
                             <constraint firstItem="zzI-qD-mdp" firstAttribute="leading" secondItem="zv9-r6-8Wh" secondAttribute="leading" constant="5" id="rD1-3F-HP9"/>
                         </constraints>
@@ -176,6 +189,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="5Qk-SX-x2G"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="z09-pU-7UD" id="fP0-Yl-yKE"/>
                         <outlet property="companyNameLabel" destination="Ydt-Xd-1nc" id="oKd-pm-Kij"/>
                         <outlet property="locationLabel" destination="dBI-J9-xTr" id="6bI-3y-Qhu"/>
                         <outlet property="mapView" destination="zzI-qD-mdp" id="wsK-YI-frp"/>
