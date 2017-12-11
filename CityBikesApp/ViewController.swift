@@ -13,16 +13,19 @@ class BikeListTableViewCell: UITableViewCell {
     @IBOutlet weak var companyLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
 }
-class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource {
+class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate {
 
     @IBOutlet weak var bikeListTableView: UITableView!
-    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var bikeListSearchBar: UISearchBar!
     var listArr:[Any] = []
+    var searchActive : Bool = false
+    var filteredArr:[AnyObject] = []
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib
         self.title = "CityBikes"
         getBikeList()
+       
     }
     
     func getBikeList(){
@@ -30,7 +33,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
          serviceHelper.sendRequest(toWebServer:"http://api.citybik.es/v2/networks?fields=id,name,company,location", viewController:self) {(_status, data, response) in
             do {
                 if(_status == true){
-                let getResponse = try JSONSerialization.jsonObject(with: data!, options: .allowFragments)  as! [String: AnyObject];
+                    let getResponse = try JSONSerialization.jsonObject(with: data!, options: .allowFragments)  as! [String: AnyObject];
                     self.listArr = (getResponse["networks"] as? [Any])!
                     DispatchQueue.main.async {
                         self.bikeListTableView.reloadData()
@@ -46,7 +49,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     
     // MARK:- TableView Delegate and Datasource methods
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-      return listArr.count
+        return searchActive == true ? filteredArr.count: listArr.count
     }
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -55,7 +58,7 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "BikeListTableViewCell") as! BikeListTableViewCell
         
-        let dataDict = self.listArr[indexPath.row] as AnyObject
+        let dataDict = searchActive == true ? self.filteredArr[indexPath.row] as AnyObject : self.listArr[indexPath.row] as AnyObject
 
         // getting company Name
         let companyNameStr = getComapanyName(dict: dataDict as! NSDictionary)
@@ -64,9 +67,9 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         let locationDict = dataDict["location"] as! NSDictionary
         let locationStr = NSString(format:"%@,%@",(locationDict["city"]as? String)!,(locationDict["country"]as? String)!)
         
-       cell.bikeTitleLabel.text = dataDict["name"] as? String
+        cell.bikeTitleLabel.text = dataDict["name"] as? String
         cell.companyLabel.text = "Company: \(companyNameStr)"
-        cell.locationLabel.text = "Location:\(locationStr)"
+        cell.locationLabel.text = "Location: \(locationStr)"
         return cell
     }
     
@@ -78,8 +81,8 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         if (segue.identifier == "DetailViewController") {
             if self.bikeListTableView.indexPathForSelectedRow != nil {
                 let controller = segue.destination as! DetailViewController
-                let dataDict = self.listArr[(self.bikeListTableView.indexPathForSelectedRow?.row)!] as AnyObject
-                controller.bikeIdStr = "Test"
+                let dataDict = searchActive == true ? self.filteredArr[(self.bikeListTableView.indexPathForSelectedRow?.row)!] as AnyObject : self.listArr[(self.bikeListTableView.indexPathForSelectedRow?.row)!] as AnyObject
+                controller.bikeIdStr = (dataDict["id"] as? String)!
                 controller.companyNameStr = getComapanyName(dict: dataDict as! NSDictionary) as String
                 let locationDict = dataDict["location"] as! NSDictionary
                 let locationStr = NSString(format:"%@,%@",(locationDict["city"]as? String)!,(locationDict["country"]as? String)!)
@@ -89,6 +92,51 @@ class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource
         }
         
     }
+    
+    // MARK:- UISearchBar Delegate Methods
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchActive = true;
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchActive = false;
+        searchBar.resignFirstResponder()
+        self.bikeListTableView.reloadData()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        searchActive = false;
+        searchBar.resignFirstResponder()
+        self.bikeListTableView.reloadData()
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        searchActive = false;
+        searchBar.resignFirstResponder()
+        self.bikeListTableView.reloadData()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        
+        filteredArr = listArr.filter({(data) -> Bool in
+            let dataDict = data as AnyObject
+            let nameStr:NSString = (dataDict["name"] as? String)! as NSString
+            let companyNameStr:NSString = getComapanyName(dict: dataDict as! NSDictionary) as NSString
+            let range1 = nameStr.range(of:searchText, options:.caseInsensitive)
+            let range2 = companyNameStr.range(of:searchText, options:.caseInsensitive)
+            return ((range1.location != NSNotFound) || (range2.location != NSNotFound))
+        }) as [AnyObject]
+//        if(filtered.count == 0){
+//            searchActive = false;
+//        } else {
+            searchActive = true;
+       // }
+        if searchBar.text?.count == 0{
+            searchActive = false;
+        }
+        self.bikeListTableView.reloadData()
+    }
+
     
     // MARK:- getting company Name
     func getComapanyName(dict:NSDictionary) -> NSString {
