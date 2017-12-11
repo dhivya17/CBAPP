@@ -11,8 +11,13 @@ import UIKit
 class DetailViewController: UIViewController {
     
     var bikeIdStr:String = ""
+    var companyNameStr:String = ""
+    var locationStr:String = ""
+    var bikeNameStr:String = ""
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.title = bikeNameStr as String
        print(bikeIdStr)
         // Do any additional setup after loading the view.
     }

@@ -71,6 +71,9 @@
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
+                                            <outlet property="bikeTitleLabel" destination="6wt-9r-Ji6" id="Yo8-38-swH"/>
+                                            <outlet property="companyLabel" destination="bKx-7t-vs1" id="nxR-48-UKv"/>
+                                            <outlet property="locationLabel" destination="wcu-hT-bTY" id="bnX-Tf-9nY"/>
                                             <segue destination="NWd-hN-9ug" kind="push" identifier="DetailViewController" id="00l-ZQ-e2I"/>
                                         </connections>
                                     </tableViewCell>

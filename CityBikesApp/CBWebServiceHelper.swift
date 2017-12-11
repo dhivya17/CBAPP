@@ -9,7 +9,7 @@
 import UIKit
 import SystemConfiguration
 
-typealias completionHandler = (_ status: Bool, _ responseData: Data, _ responseDetailedString: String) -> Void
+typealias completionHandler = (_ status: Bool, _ responseData: Data?, _ responseDetailedString: String?) -> Void
 class CBWebServiceHelper: NSObject {
 
     private static var sharedCBWebServiceHelper: CBWebServiceHelper = {
@@ -21,7 +21,7 @@ class CBWebServiceHelper: NSObject {
         return sharedCBWebServiceHelper
     }
     
-    func sendRequest(toWebServer serviceUrlStr: String, with responceHandler: @escaping completionHandler) {
+    func sendRequest(toWebServer serviceUrlStr: String,viewController:UIViewController, with responceHandler: @escaping completionHandler) {
         let configuration = URLSessionConfiguration .default
         let session = URLSession(configuration: configuration)
         
@@ -49,7 +49,8 @@ class CBWebServiceHelper: NSObject {
                 // Check HTTP Response for successful GET request
                 guard let httpResponse = response as? HTTPURLResponse, let receivedData = data
                     else {
-                        print("error: not a valid http response")
+                        responceHandler(false, nil, nil)
+                        self.showAlertWith(title: "Service Alert", message: "error: not a valid http response", viewController: viewController)
                         return
                 }
                 
@@ -65,17 +66,30 @@ class CBWebServiceHelper: NSObject {
                         print("Response: \(getResponse)")
                         // }
                     } catch {
-                        print("error serializing JSON: \(error)")
+                        
+                        self.showAlertWith(title: "Service Alert", message: "error serializing JSON: \(error)", viewController: viewController)
+                        responceHandler(false, nil, nil)
+
                     }
                     
                     break
                 default:
-                    print("GET request got response \(httpResponse.statusCode)")
+                    self.showAlertWith(title: "Service Alert", message: " GET request got response \(httpResponse.statusCode)", viewController: viewController)
+                    responceHandler(false, nil, nil)
                 }
             }
             dataTask.resume()
         }else{
             print("Network not awailable")
         }
+    }
+    
+    func showAlertWith(title:String, message:String,viewController: UIViewController)
+    {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: "Default action"), style: .`default`, handler: { _ in
+            NSLog("The \"OK\" alert occured.")
+        }))
+        viewController.present(alert, animated: true, completion: nil)
     }
 }
