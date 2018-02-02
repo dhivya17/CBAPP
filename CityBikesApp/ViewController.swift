@@ -9,9 +9,11 @@
 import UIKit
 
 class BikeListTableViewCell: UITableViewCell {
+    
     @IBOutlet weak var bikeTitleLabel:UILabel!
     @IBOutlet weak var companyLabel: UILabel!
     @IBOutlet weak var locationLabel: UILabel!
+    
 }
 class ViewController: UIViewController,UITableViewDelegate,UITableViewDataSource,UISearchBarDelegate {
 
